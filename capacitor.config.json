@@ -1,0 +1,16 @@
+{
+  "appId": "com.starlink.dashboard",
+  "appName": "星链智运",
+  "webDir": "public",
+  "android": {
+    "allowMixedContent": true
+  },
+  "server": {
+    "androidScheme": "http"
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  }
+}

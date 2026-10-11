@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">星链智运</string>
+    <string name="title_activity_main">星链智运</string>
+    <string name="package_name">com.starlink.dashboard</string>
+    <string name="custom_url_scheme">com.starlink.dashboard</string>
+</resources>

@@ -1,0 +1,8 @@
+# docker build 时排除
+node_modules
+.env
+*.log
+.git
+.gitignore
+dist
+build

@@ -1,0 +1,31 @@
+{
+  "name": "starlink-logistics-dashboard",
+  "version": "2.0.0",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "NODE_ENV=development node server/index.js",
+    "gen-hash": "node scripts/gen-password-hash.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "星链智运 · 智慧物流 AI 决策大屏（全栈版：Express 后端 + 响应式前端）",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.2",
+    "dotenv": "^18.0.7",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "esbuild": "^0.28.2",
+    "postject": "^1.0.0-alpha.6"
+  }
+}

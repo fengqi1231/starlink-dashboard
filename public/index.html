@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050b18">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>星链智运 · 智慧物流 AI 决策大屏</title>
+<link rel="stylesheet" href="/css/app.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" href="/icons/icon-192.png">
+</head>
+<body data-mtab="home">
+
+<!-- ══════════ 登录遮罩（AUTH_ENABLED=true 时启用） ══════════ -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <div class="login-logo"><i data-ic="waypoints"></i></div>
+    <h2>星链智运 · 决策中台</h2>
+    <p class="login-sub">请登录后访问大屏数据</p>
+    <input id="loginUser" type="text" placeholder="用户名" autocomplete="username">
+    <input id="loginPass" type="password" placeholder="密码" autocomplete="current-password">
+    <button class="btn primary" id="loginBtn">登 录</button>
+    <p class="login-msg" id="loginMsg"></p>
+  </div>
+</div>
+
+<!-- ══════════ 顶栏 ══════════ -->
+<header class="top">
+  <div class="brand">
+    <span class="logo"><i data-ic="waypoints"></i></span>
+    <div class="brand-t">
+      <h1>星链智运</h1>
+      <p>智慧物流 · AI 决策中台 <span id="dataRange" class="dim"></span></p>
+    </div>
+  </div>
+  <div class="ops">
+    <span class="net" id="net"><i data-ic="activity"></i><em>连接中…</em></span>
+    <select id="daySel" class="sel"></select>
+    <button class="btn ghost" id="btnConnect"><i data-ic="radio"></i><span class="btn-txt">互联</span></button>
+    <button class="btn ghost" id="aiToggle"><i data-ic="brain"></i><span class="btn-txt">AI 决策</span></button>
+    <span class="clock" id="clock"></span>
+  </div>
+</header>
+
+<!-- ══════════ KPI 行 ══════════ -->
+<section class="kpis" data-mtab="home">
+  <article class="kpi"><div class="k-ic c1"><i data-ic="boxes"></i></div><div class="k-t">总单量</div><div class="k-v" id="kOrders">--</div><div class="k-s" id="sOrders"></div></article>
+  <article class="kpi"><div class="k-ic c2"><i data-ic="truck"></i></div><div class="k-t">在途运单</div><div class="k-v" id="kTransit">--</div><div class="k-s" id="sTransit"></div></article>
+  <article class="kpi"><div class="k-ic c3"><i data-ic="circle-check"></i></div><div class="k-t">准时交付率</div><div class="k-v" id="kOtd">--</div><div class="k-s" id="sOtd"></div></article>
+  <article class="kpi"><div class="k-ic c4"><i data-ic="package"></i></div><div class="k-t">已签收</div><div class="k-v" id="kDelivered">--</div><div class="k-s" id="sDelivered"></div></article>
+  <article class="kpi"><div class="k-ic c5"><i data-ic="container"></i></div><div class="k-t">单均成本</div><div class="k-v" id="kCost">--</div><div class="k-s" id="sCost"></div></article>
+  <article class="kpi"><div class="k-ic c6"><i data-ic="warehouse"></i></div><div class="k-t">仓储利用率</div><div class="k-v" id="kWare">--</div><div class="k-s" id="sWare"></div></article>
+  <article class="kpi"><div class="k-ic c7"><i data-ic="timer"></i></div><div class="k-t">平均时效</div><div class="k-v" id="kHours">--</div><div class="k-s" id="sHours"></div></article>
+  <article class="kpi"><div class="k-ic c8"><i data-ic="zap"></i></div><div class="k-t">碳排放</div><div class="k-v" id="kCarbon">--</div><div class="k-s" id="sCarbon"></div></article>
+</section>
+
+<!-- ══════════ 主网格 ══════════ -->
+<main class="grid">
+  <section class="col col-l">
+    <div class="panel" data-mtab="home">
+      <header><h3><i data-ic="trending-up"></i>单量与准时率趋势</h3><span class="tag" id="trendRange"></span></header>
+      <div class="chart" id="trendChart"></div>
+    </div>
+    <div class="panel" data-mtab="home">
+      <header><h3><i data-ic="boxes"></i>货类 × 运输方式结构</h3><span class="hint">点击穿透</span></header>
+      <div class="chart" id="sunChart"></div>
+    </div>
+    <div class="panel" data-mtab="home">
+      <header><h3><i data-ic="route"></i>多式联运走廊</h3><span class="hint">点击走廊筛选</span></header>
+      <div class="chart" id="modChart"></div>
+    </div>
+  </section>
+
+  <section class="col col-c">
+    <div class="panel map-panel" data-mtab="map">
+      <header>
+        <h3><i data-ic="map-pin"></i>全国物流网络态势</h3>
+        <div class="hd-ops"><span class="hint" id="mapHint">点击省份穿透</span><button class="btn mini" id="resetMap">返回全国</button></div>
+      </header>
+      <div class="chart chart-map" id="mapChart"></div>
+    </div>
+    <div class="panel" data-mtab="map">
+      <header><h3><i data-ic="filter"></i>省份单量排行</h3><span class="hint">点击穿透</span></header>
+      <div class="chart" id="provChart"></div>
+    </div>
+  </section>
+
+  <section class="col col-r">
+    <div class="panel" data-mtab="alerts">
+      <header><h3><i data-ic="gauge"></i>核心指标达成</h3></header>
+      <div class="chart" id="gaugeChart"></div>
+    </div>
+    <div class="panel" data-mtab="ai">
+      <header><h3><i data-ic="cpu"></i>多维健康对比</h3></header>
+      <div class="chart" id="radarChart"></div>
+    </div>
+    <div class="panel" data-mtab="alerts">
+      <header><h3><i data-ic="shield-alert"></i>实时预警</h3><span class="tag" id="alertCount"></span></header>
+      <ul class="alerts" id="alertList"></ul>
+    </div>
+    <div class="panel ai-panel" data-mtab="ai">
+      <header><h3><i data-ic="brain"></i>AI 决策引擎</h3><span class="tag ai-tag" id="aiTag">本地规则引擎</span></header>
+      <div class="ai-score">
+        <div class="ai-num" id="aiScore">--</div>
+        <div class="ai-score-r">
+          <div class="ai-score-t">网络健康度</div>
+          <div class="ai-score-s" id="aiScoreTxt">计算中…</div>
+        </div>
+      </div>
+      <ul class="ai-findings" id="aiFindings"></ul>
+      <div class="ai-ops">
+        <button class="btn primary" id="btnAiPlan"><i data-ic="sparkles"></i>生成决策建议</button>
+        <button class="btn ghost" id="btnAiSettings"><i data-ic="settings"></i>大模型设置</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ══════════ 运单明细 ══════════ -->
+<section class="panel orders" data-mtab="orders">
+  <header>
+    <h3><i data-ic="send"></i>运单实时监控</h3>
+    <div class="hd-ops">
+      <span class="chip" id="provChip" style="display:none"><em id="provChipName"></em><b>×</b></span>
+      <span class="tbl-info" id="tblInfo"></span>
+      <button class="btn mini" id="tblReload"><i data-ic="rotate-ccw"></i>刷新</button>
+    </div>
+  </header>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>运单号</th><th>线路</th><th>方式</th><th class="hide-sm">目的省</th><th class="hide-sm">货类</th>
+        <th>状态</th><th class="hide-sm">时效(h)</th><th class="hide-md">成本(¥)</th><th class="hide-md">碳排(kg)</th><th>发货日期</th>
+      </tr></thead>
+      <tbody id="orderBody"></tbody>
+    </table>
+  </div>
+  <div class="pager">
+    <button class="btn mini" id="pgPrev">‹ 上一页</button>
+    <span id="pgInfo" class="dim"></span>
+    <button class="btn mini" id="pgNext">下一页 ›</button>
+  </div>
+</section>
+
+<!-- ══════════ 底部滚动播报 ══════════ -->
+<div class="ticker" data-mtab="orders"><div class="ticker-track" id="tickerTrack"></div></div>
+
+<!-- ══════════ 抽屉 / 弹窗 / 提示 ══════════ -->
+<div class="mask" id="mask"></div>
+<aside class="drawer" id="drawer">
+  <header><h3 id="drawerTitle">详情</h3><button class="btn mini" id="drawerClose"><i data-ic="x"></i></button></header>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<div class="modal" id="aiModal">
+  <div class="modal-card">
+    <header><h3><i data-ic="settings"></i>大模型接入设置</h3></header>
+    <p class="dim modal-tip">填入兼容 OpenAI 格式的接口信息（仅存于本机浏览器，不会上传）。留空则使用内置本地规则引擎。</p>
+    <label>Base URL<input id="aiBase" type="text" placeholder="https://api.example.com/v1"></label>
+    <label>API Key<input id="aiKey" type="password" placeholder="sk-..."></label>
+    <label>Model<input id="aiModel" type="text" placeholder="gpt-4o-mini / deepseek-chat / ..."></label>
+    <div class="modal-ops">
+      <button class="btn ghost" id="aiCancel">取消</button>
+      <button class="btn primary" id="aiSave">保存并启用</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ══════════ 手机底部标签导航（仅 <1024px 显示） ══════════ -->
+<nav class="tabbar" id="tabbar">
+  <button class="tab on" data-tab="home"><i data-ic="gauge"></i><span>总览</span></button>
+  <button class="tab" data-tab="map"><i data-ic="map-pin"></i><span>地图</span></button>
+  <button class="tab" data-tab="orders"><i data-ic="send"></i><span>运单</span></button>
+  <button class="tab" data-tab="alerts"><i data-ic="shield-alert"></i><span>预警</span></button>
+  <button class="tab" data-tab="ai"><i data-ic="brain"></i><span>AI</span></button>
+</nav>
+
+<script src="/capacitor.js"></script>
+<script src="/js/echarts.min.js"></script>
+<script src="/js/china.js"></script>
+<script src="/js/icons.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

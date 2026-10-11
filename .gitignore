@@ -1,0 +1,20 @@
+node_modules/
+.env
+npm-debug.log*
+.DS_Store
+*.log
+
+# 构建产物
+build/
+dist/
+*.apk
+*.exe
+sea-config.json
+
+# Android 构建中间件（保留工程源码与我们的修复）
+android/local.properties
+android/.gradle/
+android/build/
+android/app/build/
+android/captures/
+.idea/

@@ -1,0 +1,16 @@
+{
+  "name": "星链智运 · 智慧物流 AI 决策大屏",
+  "short_name": "星链智运",
+  "description": "智慧物流 AI 决策中台：电脑/手机多端数据互通",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#050b18",
+  "theme_color": "#050b18",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
