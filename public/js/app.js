@@ -30,7 +30,13 @@
   var AUTH = { token: sessionStorage.getItem('sl_token') || null };
 
   /* ---------------- API 客户端 ---------------- */
-  function serverBase() { return (localStorage.getItem('sl_server') || '').replace(/\/$/, ''); }
+  /* 公网默认服务地址（Railway 部署），APP 开箱即连，无需手动配置局域网 */
+  var PUBLIC_API = 'https://starlink-dashboard-production.up.railway.app';
+  function serverBase() {
+    var s = (localStorage.getItem('sl_server') || '').replace(/\/$/, '');
+    if (s) return s;
+    return (typeof IS_APP !== 'undefined' && IS_APP) ? PUBLIC_API : '';
+  }
   /* APP 环境判定：Capacitor 原生壳 或 file:// 协议（需手动配置电脑端服务地址） */
   var IS_APP = (typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) || location.protocol === 'file:';
   function showLogin() { $('#loginOverlay').classList.add('on'); }
